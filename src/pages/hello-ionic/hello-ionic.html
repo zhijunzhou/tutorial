@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Welcome!</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <div class="home-main">
+    <h3 class="center">Welcome to report an issue!</h3>
+
+    <div class="center">
+      <p>
+        Click the button below to start! You can upload a picture from your gallery or take a picture using your camera!
+      </p>
+      <p>
+        <button ion-button color="secondary" (click)="start($event)" block="{{isMobile ? true : false}}" outline>Report an issue</button>
+      </p>
+    </div>
+  </div>
+</ion-content>

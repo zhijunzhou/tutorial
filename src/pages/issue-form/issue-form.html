@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Fill form</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3>Descripe your issue:</h3>
+  <form [formGroup]="issueForm" (ngSubmit)="onSubmit()">
+  <div>
+    <ion-list>
+      <ion-item>
+        <ion-label>Issue type</ion-label>
+        <ion-select [formControl]="issueType">
+          <ion-option value="1">Type 1</ion-option>
+          <ion-option value="2">Type 2</ion-option>
+          <ion-option value="3">Type 3</ion-option>
+          <ion-option value="4">Type 4</ion-option>
+          <ion-option value="5">Type 5</ion-option>
+          <ion-option value="6">Type 6</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Priority</ion-label>
+        <ion-select [formControl]="priority">
+          <ion-option value="critical">Critical</ion-option>
+          <ion-option value="high">High</ion-option>
+          <ion-option value="medium">Medium</ion-option>
+          <ion-option value="low">Low</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Attachments</ion-label>    
+        <ion-input type="hidden"></ion-input>    
+        <ion-icon name="{{isMobile ? 'camera' : 'image'}}"  (click)="takePic()" item-right></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-label>Description</ion-label>
+        <ion-textarea [formControl]="description"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>Your Email</ion-label>
+        <ion-input type="email" [formControl]="iemail"></ion-input>
+      </ion-item>
+    </ion-list>
+    <p *ngIf="isMobile === false" class="hidden">
+      <input type="file" (change)="upload($event)" id="attachment" accept="image/*" />
+    </p>
+    <p class="pull-right">
+      <button ion-button color="secondary" type="submit" outline>Next</button>
+    </p>
+  </div>
+  </form>
+</ion-content>
