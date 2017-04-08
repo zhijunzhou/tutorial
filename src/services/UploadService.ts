@@ -5,11 +5,14 @@ import 'rxjs/Rx';
 @Injectable()
 export class UploadService {
 
+    serviceServer = 'http://localhost:8080';
+    uploadUrl = this.serviceServer + "/v2/upload";
+
     constructor(private http: Http) {
     }
 
-    upload(files) {
-        var headers = new Headers();
+    upload(files, cb) {
+        let headers = new Headers();
         var formParams = new FormData();
 
         headers.set('Content-Type', 'multipart/form-data');
@@ -19,11 +22,11 @@ export class UploadService {
         }
         
         return this.http.post(
-            'http://localhost:8080/v2/upload', formParams)
+            this.uploadUrl, formParams)
             .map(res => res.json())
             .subscribe(
-                data => { console.log(data); },
-                err => { console.log(err); }
+                data => { cb(null, data)},
+                err => { cb(err); }
             );
     }
 }

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { ConfirmFormPage } from '../confirm-form/confirm-form';
 import { DeviceService } from '../../services/DeviceService';
 import { UploadService } from '../../services/UploadService';
-
+import { ToastService } from '../../services/ToastService';
+import { FormService } from '../../services/FormService';
 
 @Component({
   selector: 'page-issue-form',
@@ -32,7 +33,8 @@ export class IssueFormPage {
     public navParams: NavParams,
     public devService: DeviceService,
     public uploadService: UploadService,
-    public toastCtrl: ToastController,
+    public toastService: ToastService,
+    public formService: FormService,
     public builder: FormBuilder) {
     this.isMobile = devService.isMobile();
 
@@ -41,7 +43,7 @@ export class IssueFormPage {
       priority: ['', Validators.required],
       imageUrl: ['', Validators.required],
       description: ['', Validators.required],
-      iemail: ['', Validators.required],
+      iemail: ['', Validators.required], 
     });
 
     this.description = this.issueForm.controls['description'];
@@ -68,7 +70,7 @@ export class IssueFormPage {
         // handle error
       });
     } else {
-      var attachment = document.getElementById('attachment');
+      let attachment = document.getElementById('attachment');
 
       if (attachment) {
         attachment.click();
@@ -79,27 +81,36 @@ export class IssueFormPage {
   upload(event) {
     let target = event.target || event.srcElement;
     let files = target.files;
-    this.uploadService.upload(files);
+    let self = this;
+    this.uploadService.upload(files, function(err, data) {
+      if(err) {
+        self.toastService.show('Something went wrong');
+        return;
+      } 
+      self.formService.setIssue(data.info);
+      self.imageUrl = self.uploadService.serviceServer + "/" + data.info.attachement.path;
+    });
   }
 
   onSubmit() { 
-    console.log(this.issueForm.value);
     const ctrl_issueType = this.issueForm.controls['issueType'];
     const ctrl_priority = this.issueForm.controls['priority'];
     const ctrl_description = this.issueForm.controls['description'];
     const ctrl_email = this.issueForm.controls['iemail'];
     const ctrl_imageUrl = this.issueForm.controls['imageUrl'];
 
-    if (ctrl_imageUrl.valid && ctrl_description.valid
-      && ctrl_email.valid && ctrl_issueType.valid
-      && ctrl_priority.valid) {    
+    if (ctrl_priority.valid && ctrl_description.valid
+      && ctrl_email.valid && ctrl_issueType.valid) {    
+        let issue = this.formService.getIssue();
+
+        issue['description'] = ctrl_description.value;
+        issue['iemail'] = ctrl_email.value;
+        issue['issueType'] = ctrl_issueType.value;
+        issue['priority'] = ctrl_priority.value;
         this.navCtrl.push(ConfirmFormPage);
+
     } else {
-      let toast = this.toastCtrl.create({
-        message: 'Please complete all information!',
-        duration: 5000
-      });
-      toast.present();
+      this.toastService.show('Please complete all information!');
     }
   }
 

@@ -14,19 +14,38 @@
   <div>
     <ion-list>
       <ion-item>
-        <ion-label>Issue type</ion-label>        
+        <ion-label>Issue type</ion-label>  
+        <ion-select [(ngModel)]="issue.issueType" disabled>
+          <ion-option value="1">Type 1</ion-option>
+          <ion-option value="2">Type 2</ion-option>
+          <ion-option value="3">Type 3</ion-option>
+          <ion-option value="4">Type 4</ion-option>
+          <ion-option value="5">Type 5</ion-option>
+          <ion-option value="6">Type 6</ion-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>Priority</ion-label>
+        <ion-select [(ngModel)]="issue.priority" disabled>
+          <ion-option value="critical">Critical</ion-option>
+          <ion-option value="high">High</ion-option>
+          <ion-option value="medium">Medium</ion-option>
+          <ion-option value="low">Low</ion-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>Attachments</ion-label>
+        <ion-thumbnail item-right>
+          <img [src]="imgUrl" height="80">
+        </ion-thumbnail>
       </ion-item>
       <ion-item>
         <ion-label>Description</ion-label>
-      </ion-item>
+        <ion-textarea [(ngModel)]="issue.description" disabled></ion-textarea>
+      </ion-item> 
       <ion-item>
         <ion-label>Your Email</ion-label>
+        <ion-input type="email" [(ngModel)]="issue.iemail" disabled></ion-input>
       </ion-item>
     </ion-list>
 

@@ -9,6 +9,8 @@ import { ConfirmFormPage } from '../pages/confirm-form/confirm-form';
 
 import { DeviceService } from '../services/DeviceService';
 import { UploadService } from '../services/UploadService';
+import { FormService } from '../services/FormService';
+import { ToastService } from '../services/ToastService';
 import { Camera } from '@ionic-native/camera';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -40,6 +42,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     DeviceService,
     UploadService,
+    FormService,
+    ToastService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
